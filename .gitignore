@@ -1,0 +1,16 @@
+# Angular
+frontend/todo-client/node_modules/
+frontend/todo-client/dist/
+
+# .NET
+backend/TodoApi/bin/
+backend/TodoApi/obj/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Environment
+.env
