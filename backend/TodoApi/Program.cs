@@ -1,7 +1,23 @@
+using TodoApi.Dtos;
+using TodoApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<ITodoService, TodoService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AngularClient", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -11,31 +27,51 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors("AngularClient");
 
-var summaries = new[]
+app.MapGet("/api/todos", (ITodoService todoService) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    return Results.Ok(todoService.GetAll());
+});
 
-app.MapGet("/weatherforecast", () =>
+app.MapPost("/api/todos", (CreateTodoItem request, ITodoService todoService) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
+    if (string.IsNullOrWhiteSpace(request.Title))
+    {
+        return Results.BadRequest(new
+        {
+            message = "Todo title is required."
+        });
+    }
 
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    if (string.IsNullOrWhiteSpace(request.Description))
+    {
+        return Results.BadRequest(new
+        {
+            message = "Todo Description is required."
+        });
+    }
+
+    var todo = todoService.Create(request);
+    return Results.Created($"/api/todos/{todo.id}", todo);
+});
+
+app.MapDelete("/api/todos/{id:guid}", (Guid id, ITodoService todoService) =>
+{
+    var deleted = todoService.Delete(id);
+
+    return deleted
+        ? Results.NoContent()
+        : Results.NotFound(new { message = "Todo item not found." });
+});
+
+app.MapPut("/api/todos/{id:guid}/toggle", (Guid id, ITodoService todoService) =>
+{
+    var updatedTodo = todoService.Toggle(id);
+
+    return updatedTodo is null
+        ? Results.NotFound(new { message = "Todo item not found." })
+        : Results.Ok(updatedTodo);
+});
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
