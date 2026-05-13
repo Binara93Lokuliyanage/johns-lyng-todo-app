@@ -8,71 +8,88 @@
       </p>
     </div>
 
-    <a routerLink="/create" class="primary-link">
-      Add Task
-    </a>
   </div>
 
   @if (errorMessage()) {
-    <div class="alert alert-error">
-      {{ errorMessage() }}
-    </div>
+  <div class="alert alert-error">
+    {{ errorMessage() }}
+  </div>
   }
 
   @if (isLoading()) {
-    <div class="state-card">
-      Loading tasks...
-    </div>
+  <div class="card state-card">
+    Loading tasks...
+  </div>
   } @else {
-    @if (todos().length === 0) {
-      <div class="state-card empty-state">
-        <h2>No tasks found</h2>
-        <p>Create your first task to get started.</p>
-        <a routerLink="/create" class="primary-link">Create Task</a>
+  @if (todos().length === 0) {
+  <div class="card state-card empty-state">
+    <h2>No tasks found</h2>
+    <p>Create your first task to get started.</p>
+    <a routerLink="/create" class="primary-link">Create Task</a>
+  </div>
+  } @else {
+  <div class="todo-grid">
+    @for (todo of todos(); track todo.id) {
+    <article class="card todo-card" [class.completed]="todo.isDone">
+      <div class="todo-card-header">
+        <label class="status-control">
+          <input type="checkbox" [checked]="todo.isDone" (change)="toggleTodo(todo.id)" />
+          <span>
+            {{ todo.isDone ? 'Completed' : 'Pending' }}
+          </span>
+        </label>
+
       </div>
-    } @else {
-      <div class="todo-grid">
-        @for (todo of todos(); track todo.id) {
-          <article class="todo-card" [class.completed]="todo.isDone">
-            <div class="todo-card-header">
-              <label class="status-control">
-                <input
-                  type="checkbox"
-                  [checked]="todo.isDone"
-                  (change)="toggleTodo(todo.id)"
-                />
-                <span>
-                  {{ todo.isDone ? 'Completed' : 'Pending' }}
-                </span>
-              </label>
 
-              <span class="date-text">
-                {{ todo.createdAt | date:'mediumDate' }}
-              </span>
-            </div>
+      <div class = "todo-content">
+        <h2>{{ todo.title }}</h2>
 
-            <h2>{{ todo.title }}</h2>
+      <div class="todo-description">
+        @if (todo.description.length > 100) {
 
-            <p class="todo-description">
-              {{ todo.description || 'No description provided.' }}
-            </p>
+        @if (isDescriptionExpanded(todo.id)) {
+        <p>
+          {{ todo.description }}
+        </p>
 
-            <div class="card-actions">
-              <a [routerLink]="['/edit', todo.id]" class="secondary-link">
-                Edit
-              </a>
+        <button type="button" class="text-button" (click)="toggleDescription(todo.id)">
+          Read Less
+        </button>
 
-              <button
-                type="button"
-                class="danger-button"
-                (click)="deleteTodo(todo.id)"
-              >
-                Delete
-              </button>
-            </div>
-          </article>
+        } @else {
+
+        <p>
+          {{ todo.description.slice(0, 100) }}...
+        </p>
+
+        <button type="button" class="text-button" (click)="toggleDescription(todo.id)">
+          Read More
+        </button>
+
+        }
+
+        } @else {
+
+        <p>
+          {{ todo.description || 'No description provided.' }}
+        </p>
+
         }
       </div>
+      </div>
+
+      <div class="card-actions">
+        <a [routerLink]="['/edit', todo.id]" class="btn btn-primary">
+          Edit
+        </a>
+
+        <button type="button" class="btn btn-danger" (click)="deleteTodo(todo.id)">
+          Delete
+        </button>
+      </div>
+    </article>
     }
+  </div>
+  }
   }
 </section>

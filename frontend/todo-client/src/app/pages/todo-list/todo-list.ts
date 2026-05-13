@@ -15,8 +15,20 @@ export class TodoList implements OnInit {
   todos = signal<TodoItem[]>([]);
   isLoading = signal(false);
   errorMessage = signal('');
+  expandedDescriptions = signal<Record<string, boolean>>({});
 
   constructor(private todoService: Todo) { }
+
+  toggleDescription(id: string): void {
+    this.expandedDescriptions.update((state) => ({
+      ...state,
+      [id]: !state[id]
+    }));
+  }
+
+  isDescriptionExpanded(id: string): boolean {
+    return !!this.expandedDescriptions()[id];
+  }
 
   ngOnInit(): void {
     this.loadTodos();

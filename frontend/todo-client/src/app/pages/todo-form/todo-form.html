@@ -21,7 +21,7 @@
     </a>
   </div>
 
-  <form class="todo-form" [formGroup]="todoForm" (ngSubmit)="submitForm()">
+  <form class="form card todo-form" [formGroup]="todoForm" (ngSubmit)="submitForm()">
     <div class="form-group">
       <label for="title">Task Title</label>
 
@@ -55,6 +55,12 @@
         placeholder="Add more details about this task..."
       ></textarea>
 
+      @if (descriptionControl.touched && descriptionControl.hasError('required')) {
+        <small class="field-error">
+          Task Description is required.
+        </small>
+      }
+
       @if (descriptionControl.touched && descriptionControl.hasError('maxlength')) {
         <small class="field-error">
           Description cannot exceed 500 characters.
@@ -71,13 +77,13 @@
     <div class="form-actions">
       <button
         type="submit"
-        class="primary-button"
+        class="btn btn-primary"
         [disabled]="isSubmitting()"
       >
         {{ isSubmitting() ? 'Saving...' : isEditMode() ? 'Update Task' : 'Create Task' }}
       </button>
 
-      <a routerLink="/" class="secondary-link">
+      <a routerLink="/" class="text-button">
         Cancel
       </a>
     </div>

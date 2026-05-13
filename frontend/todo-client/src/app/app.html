@@ -1,18 +1,22 @@
-<header class="app-header">
+<section class="app-section">
   <nav class="navbar">
-    <a routerLink="/" class="brand">TODO App</a>
+    <a routerLink="/" class="brand">
+      <lucide-icon [img]="ListCheck"></lucide-icon>
+      ToDo List
+    </a>
 
     <div class="nav-links">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        Tasks
+      <a class = "nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <lucide-icon [img]="List"></lucide-icon>
       </a>
-      <a routerLink="/create" routerLinkActive="active">
-        Add Task
+      <a class = "nav-item" routerLink="/create" routerLinkActive="active">
+        <lucide-icon [img]="Plus"></lucide-icon>
       </a>
     </div>
   </nav>
-</header>
 
-<main class="app-main">
-  <router-outlet />
-</main>
+
+  <main class="app-main">
+    <router-outlet />
+  </main>
+</section>

@@ -27,7 +27,7 @@ export class TodoForm implements OnInit {
   ) {
     this.todoForm = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(100)]],
-      description: ['', [Validators.maxLength(500)]]
+      description: ['', [Validators.required, Validators.maxLength(500)]]
     });
   }
 

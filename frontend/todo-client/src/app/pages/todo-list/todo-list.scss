@@ -1,0 +1,36 @@
+@use '../../../styles/variables' as *;
+
+
+.todo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+}
+
+.todo-card {
+    background-color: $bg-white;
+}
+
+.todo-card-header {
+    padding-bottom: 0.5rem;
+    border-bottom: $border;
+    margin-bottom: 1rem;
+}
+
+.todo-content {
+    min-height: 150px;
+}
+
+.todo-description {
+    margin-top: 0.5rem;
+    
+}
+
+.card-actions {
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: $border;
+    display: flex;
+    gap: 1rem;
+}
+

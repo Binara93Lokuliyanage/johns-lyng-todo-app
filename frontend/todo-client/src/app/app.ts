@@ -1,14 +1,16 @@
-import { Component, signal, OnInit } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet, RouterLinkActive, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { LucideAngularModule} from 'lucide-angular';
 
 import { TodoItem } from './models/todo-item';
 import { Todo } from './services/todo';
+import { List, PlusIcon, ListCheckIcon } from 'lucide-angular/src/icons';''
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, FormsModule, RouterOutlet, RouterLinkActive, RouterLink],
+  imports: [CommonModule, FormsModule, RouterOutlet, RouterLinkActive, RouterLink, LucideAngularModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -18,6 +20,9 @@ export class App{
   newTodoDescription = signal('');
   isLoading = signal(false);
   errorMessage = signal('');
+  readonly List = List;
+  readonly Plus = PlusIcon;
+  readonly ListCheck = ListCheckIcon;
 
   constructor(private todoService: Todo){}
 
