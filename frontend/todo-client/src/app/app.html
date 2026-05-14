@@ -1,24 +1,40 @@
-<section class="app-section">
-  <nav class="navbar">
-    <a routerLink="/" class="brand">
-      <lucide-icon [img]="ListCheck"></lucide-icon>
+<aside class="app-section" data-testid="app-shell">
+  <nav class="navbar" aria-label="Main navigation" data-testid="main-navbar">
+    <a
+      routerLink="/"
+      class="brand"
+      data-testid="brand-link"
+      aria-label="Go to todo list"
+    >
+      <lucide-icon [img]="ListCheck" aria-hidden="true"></lucide-icon>
       ToDo.com
     </a>
 
-    <div class="nav-links">
-      <a class = "nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <lucide-icon [img]="List"></lucide-icon>
-        <span class = "nav-text">Todo List</span>
+    <div class="nav-links" data-testid="nav-links">
+      <a
+        class="nav-item"
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        data-testid="nav-todo-list"
+      >
+        <lucide-icon [img]="List" aria-hidden="true"></lucide-icon>
+        <span class="nav-text">Todo List</span>
       </a>
-      <a class = "nav-item" routerLink="/create" routerLinkActive="active">
-        <lucide-icon [img]="Plus"></lucide-icon>
-        <span class = "nav-text">Add Todo</span>
+
+      <a
+        class="nav-item"
+        routerLink="/create"
+        routerLinkActive="active"
+        data-testid="nav-add-todo"
+      >
+        <lucide-icon [img]="Plus" aria-hidden="true"></lucide-icon>
+        <span class="nav-text">Add Todo</span>
       </a>
     </div>
   </nav>
 
-
-  <main class="app-main">
+  <main class="app-main" data-testid="app-main">
     <router-outlet />
   </main>
-</section>
+</aside>

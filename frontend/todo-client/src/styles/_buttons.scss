@@ -15,6 +15,14 @@ button {
     border: $border;
     padding: 0.5rem 1rem;
     font-weight: 500;
+    transition: $transition;
+    opacity: 0.9;
+
+    &:hover {
+        opacity: 1;
+        transform: scale(1.02);
+        transition: $transition;
+    }
 }
 
 .btn-danger {

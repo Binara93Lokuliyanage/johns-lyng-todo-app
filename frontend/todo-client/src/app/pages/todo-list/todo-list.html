@@ -1,113 +1,93 @@
-<section class="page-section">
+<section class="page-section" data-testid="todo-list-page">
   <div class="page-header">
     <div>
       <p class="eyebrow">Task Overview</p>
       <h1>TODO List</h1>
     </div>
-
   </div>
 
-  <div class="filter-tabs">
-  <button
-    type="button"
-    class="filter-btn"
-    [class.active]="activeFilter() === 'all'"
-    (click)="setFilter('all')"
-  >
-    All
-  </button>
+  <div class="filter-tabs" data-testid="todo-filter-tabs" aria-label="Todo status filters">
+    <button type="button" class="filter-btn" [class.active]="activeFilter() === 'all'" (click)="setFilter('all')"
+      data-testid="filter-all">
+      All
+    </button>
 
-  <button
-    type="button"
-    class="filter-btn"
-    [class.active]="activeFilter() === 'completed'"
-    (click)="setFilter('completed')"
-  >
-    Completed
-  </button>
+    <button type="button" class="filter-btn" [class.active]="activeFilter() === 'completed'"
+      (click)="setFilter('completed')" data-testid="filter-completed">
+      Completed
+    </button>
 
-  <button
-    type="button"
-    class="filter-btn"
-    [class.active]="activeFilter() === 'pending'"
-    (click)="setFilter('pending')"
-  >
-    Pending
-  </button>
-</div>
+    <button type="button" class="filter-btn" [class.active]="activeFilter() === 'pending'"
+      (click)="setFilter('pending')" data-testid="filter-pending">
+      Pending
+    </button>
+  </div>
 
   @if (errorMessage()) {
-  <div class="alert alert-error">
+  <div class="alert alert-error" data-testid="todo-list-error">
     {{ errorMessage() }}
   </div>
   }
 
   @if (isLoading()) {
-  <div class="card state-card">
+  <div class="card state-card" data-testid="todo-list-loading">
     Loading tasks...
   </div>
   } @else {
   @if (filteredTodos().length === 0) {
-  <div class=" state-card empty-state">
+  <div class="state-card empty-state" data-testid="todo-empty-state">
     <h2>No tasks found</h2>
   </div>
   } @else {
-  <div class="todo-grid">
+  <div class="todo-grid" data-testid="todo-grid">
     @for (todo of filteredTodos(); track todo.id) {
-    <article class="card todo-card" [class.completed]="todo.isDone">
+    <article class="card todo-card" [class.completed]="todo.isDone" [attr.data-testid]="'todo-card-' + todo.id">
       <div class="todo-card-header">
         <label class="status-control">
-          <input type="checkbox" [checked]="todo.isDone" (change)="toggleTodo(todo.id)" />
-          <span>
+          <input type="checkbox" [checked]="todo.isDone" (change)="toggleTodo(todo.id)"
+            [attr.data-testid]="'todo-toggle-' + todo.id" />
+
+          <span [attr.data-testid]="'todo-status-' + todo.id">
             {{ todo.isDone ? 'Completed' : 'Pending' }}
           </span>
         </label>
-
       </div>
 
-      <div class = "todo-content">
-        <h2>{{ todo.title }}</h2>
+      <div class="todo-content">
+        <h2 [attr.data-testid]="'todo-title-' + todo.id">
+          {{ todo.title }}
+        </h2>
 
-      <div class="todo-description">
-        @if (todo.description.length > 100) {
+        <div class="todo-description" [attr.data-testid]="'todo-description-' + todo.id">
+          @if (todo.description.length > 100) {
+          @if (isDescriptionExpanded(todo.id)) {
+          <p>{{ todo.description }}</p>
 
-        @if (isDescriptionExpanded(todo.id)) {
-        <p>
-          {{ todo.description }}
-        </p>
+          <button type="button" class="text-button" (click)="toggleDescription(todo.id)"
+            [attr.data-testid]="'todo-read-less-' + todo.id">
+            Read Less
+          </button>
+          } @else {
+          <p>{{ todo.description.slice(0, 100) }}...</p>
 
-        <button type="button" class="text-button" (click)="toggleDescription(todo.id)">
-          Read Less
-        </button>
-
-        } @else {
-
-        <p>
-          {{ todo.description.slice(0, 100) }}...
-        </p>
-
-        <button type="button" class="text-button" (click)="toggleDescription(todo.id)">
-          Read More
-        </button>
-
-        }
-
-        } @else {
-
-        <p>
-          {{ todo.description || 'No description provided.' }}
-        </p>
-
-        }
-      </div>
+          <button type="button" class="text-button" (click)="toggleDescription(todo.id)"
+            [attr.data-testid]="'todo-read-more-' + todo.id">
+            Read More
+          </button>
+          }
+          } @else {
+          <p>{{ todo.description || 'No description provided.' }}</p>
+          }
+        </div>
       </div>
 
       <div class="card-actions">
-        <a [routerLink]="['/edit', todo.id]" class="btn btn-primary">
+        <a [routerLink]="['/edit', todo.id]" class="btn btn-primary" [attr.data-testid]="'todo-edit-' + todo.id">
           Edit
         </a>
 
-        <button type="button" class="btn btn-danger" (click)="deleteTodo(todo.id)">
+        <button type="button" class="btn btn-danger" (click)="deleteTodo(todo.id)"
+          [attr.data-testid]="'todo-delete-' + todo.id">
           Delete
         </button>
       </div>

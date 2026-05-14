@@ -2,11 +2,15 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet, RouterLinkActive, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { LucideAngularModule} from 'lucide-angular';
 
 import { TodoItem } from './models/todo-item';
 import { Todo } from './services/todo';
-import { List, PlusIcon, ListCheckIcon } from 'lucide-angular/src/icons';''
+import {
+  LucideAngularModule,
+  List,
+  PlusIcon,
+  ListCheckIcon
+} from 'lucide-angular';
 
 @Component({
   selector: 'app-root',
