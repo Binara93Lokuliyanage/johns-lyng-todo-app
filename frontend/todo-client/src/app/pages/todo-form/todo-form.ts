@@ -15,6 +15,7 @@ export class TodoForm implements OnInit {
   errorMessage = signal('');
   isSubmitting = signal(false);
   isEditMode = signal(false);
+  isLoading = signal(false);
   todoId = signal<string | null>(null);
 
   todoForm!: FormGroup;
@@ -38,8 +39,7 @@ export class TodoForm implements OnInit {
     if (id) {
       this.todoId.set(id);
       this.isEditMode.set(true);
-
-      // have to load the existing todo here after adding GET /api/todos/{id}
+      this.loadTodo(id);
     }
   }
 
@@ -49,6 +49,26 @@ export class TodoForm implements OnInit {
 
   get descriptionControl() {
     return this.todoForm.get('description')!;
+  }
+
+  loadTodo(id: string): void {
+    this.isLoading.set(true);
+    this.errorMessage.set('');
+
+    this.todoService.getTodoById(id).subscribe({
+      next: (todo) => {
+        this.todoForm.patchValue({
+          title: todo.title,
+          description: todo.description
+        });
+
+        this.isLoading.set(false);
+      },
+      error: () => {
+        this.errorMessage.set('Unable to load task details.');
+        this.isLoading.set(false);
+      }
+    });
   }
 
   submitForm(): void {
@@ -64,9 +84,24 @@ export class TodoForm implements OnInit {
     this.errorMessage.set('');
 
     if (this.isEditMode()) {
-      // Have to enable this after adding PUT /api/todos/{id}
-      this.errorMessage.set('Edit functionality will be enabled after backend update endpoint is added.');
-      this.isSubmitting.set(false);
+      const id = this.todoId();
+
+      if (!id) {
+        this.errorMessage.set('Invalid task selected.');
+        this.isSubmitting.set(false);
+        return;
+      }
+
+      this.todoService.updateTodo(id, title, description).subscribe({
+        next: () => {
+          this.router.navigate(['/']);
+        },
+        error: () => {
+          this.errorMessage.set('Unable to update task. Please try again.');
+          this.isSubmitting.set(false);
+        }
+      });
+
       return;
     }
 

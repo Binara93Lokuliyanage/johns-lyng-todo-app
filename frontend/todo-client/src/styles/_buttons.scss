@@ -32,3 +32,8 @@ button {
     font-weight: 500;
     color: $text-blue;
 }
+
+.filter-btn {
+    border-right: $border;
+    padding: 0.25rem 1rem;
+}

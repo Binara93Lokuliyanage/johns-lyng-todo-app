@@ -5,30 +5,22 @@ import { RouterLink } from '@angular/router';
 import { TodoItem } from '../../models/todo-item';
 import { Todo } from '../../services/todo';
 
+type TodoFilter = 'all' | 'completed' | 'pending';
+
 @Component({
   selector: 'app-todo-list',
   imports: [CommonModule, RouterLink],
   templateUrl: './todo-list.html',
-  styleUrl: './todo-list.scss',
+  styleUrl: './todo-list.scss'
 })
 export class TodoList implements OnInit {
   todos = signal<TodoItem[]>([]);
+  activeFilter = signal<TodoFilter>('all');
+  expandedDescriptions = signal<Record<string, boolean>>({});
   isLoading = signal(false);
   errorMessage = signal('');
-  expandedDescriptions = signal<Record<string, boolean>>({});
 
-  constructor(private todoService: Todo) { }
-
-  toggleDescription(id: string): void {
-    this.expandedDescriptions.update((state) => ({
-      ...state,
-      [id]: !state[id]
-    }));
-  }
-
-  isDescriptionExpanded(id: string): boolean {
-    return !!this.expandedDescriptions()[id];
-  }
+  constructor(private todoService: Todo) {}
 
   ngOnInit(): void {
     this.loadTodos();
@@ -48,6 +40,35 @@ export class TodoList implements OnInit {
         this.isLoading.set(false);
       }
     });
+  }
+
+  setFilter(filter: TodoFilter): void {
+    this.activeFilter.set(filter);
+  }
+
+  filteredTodos(): TodoItem[] {
+    const filter = this.activeFilter();
+
+    if (filter === 'completed') {
+      return this.todos().filter((todo) => todo.isDone);
+    }
+
+    if (filter === 'pending') {
+      return this.todos().filter((todo) => !todo.isDone);
+    }
+
+    return this.todos();
+  }
+
+  toggleDescription(id: string): void {
+    this.expandedDescriptions.update((state) => ({
+      ...state,
+      [id]: !state[id]
+    }));
+  }
+
+  isDescriptionExpanded(id: string): boolean {
+    return !!this.expandedDescriptions()[id];
   }
 
   toggleTodo(id: string): void {

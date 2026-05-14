@@ -5,7 +5,7 @@
     width: 100%;
     background-color: $bg-primary;
     display: grid;
-    grid-template-columns: 120px auto;
+    grid-template-columns: 160px auto;
     height: 100vh;
 }
 
@@ -25,7 +25,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 90px;
+    width: 100%;
     border: 1px solid $primary;
     border-radius: $radius-lg;
     padding: 0.5rem;
@@ -40,11 +40,17 @@
 
 .nav-item {
     border-radius: 25px;
-    width: 3rem;
+    width: auto;
     height: 3rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+}
+
+.nav-text{
+    line-height: 110%;
 }
 
 .active {

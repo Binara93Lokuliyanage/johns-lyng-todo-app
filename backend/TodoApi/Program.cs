@@ -34,6 +34,15 @@ app.MapGet("/api/todos", (ITodoService todoService) =>
     return Results.Ok(todoService.GetAll());
 });
 
+app.MapGet("/api/todos/{id:guid}", (Guid id, ITodoService todoService) =>
+{
+    var todo = todoService.GetById(id);
+
+    return todo is null
+        ? Results.NotFound(new { message = "Todo item not found." })
+        : Results.Ok(todo);
+});
+
 app.MapPost("/api/todos", (CreateTodoItem request, ITodoService todoService) =>
 {
     if (string.IsNullOrWhiteSpace(request.Title))
@@ -54,6 +63,23 @@ app.MapPost("/api/todos", (CreateTodoItem request, ITodoService todoService) =>
 
     var todo = todoService.Create(request);
     return Results.Created($"/api/todos/{todo.id}", todo);
+});
+
+app.MapPut("/api/todos/{id:guid}", (Guid id, UpdateTodoRequest request, ITodoService todoService) =>
+{
+    if (string.IsNullOrWhiteSpace(request.Title))
+    {
+        return Results.BadRequest(new
+        {
+            message = "Todo title is required."
+        });
+    }
+
+    var updatedTodo = todoService.Update(id, request);
+
+    return updatedTodo is null
+        ? Results.NotFound(new { message = "Todo item not found." })
+        : Results.Ok(updatedTodo);
 });
 
 app.MapDelete("/api/todos/{id:guid}", (Guid id, ITodoService todoService) =>

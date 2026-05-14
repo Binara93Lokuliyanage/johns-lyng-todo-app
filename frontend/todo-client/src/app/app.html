@@ -2,15 +2,17 @@
   <nav class="navbar">
     <a routerLink="/" class="brand">
       <lucide-icon [img]="ListCheck"></lucide-icon>
-      ToDo List
+      ToDo.com
     </a>
 
     <div class="nav-links">
       <a class = "nav-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         <lucide-icon [img]="List"></lucide-icon>
+        <span class = "nav-text">Todo List</span>
       </a>
       <a class = "nav-item" routerLink="/create" routerLinkActive="active">
         <lucide-icon [img]="Plus"></lucide-icon>
+        <span class = "nav-text">Add Todo</span>
       </a>
     </div>
   </nav>

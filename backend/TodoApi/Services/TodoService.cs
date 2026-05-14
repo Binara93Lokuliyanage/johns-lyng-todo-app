@@ -10,6 +10,12 @@ public class TodoService : ITodoService
     {
         return _todos.OrderByDescending(todo => todo.CreatedAt);
     }
+
+    public TodoItem? GetById(Guid id)
+    {
+        return _todos.FirstOrDefault(todo => todo.id == id);
+    }
+
     public TodoItem Create(CreateTodoItem request)
     {
         var todo = new TodoItem
@@ -19,6 +25,21 @@ public class TodoService : ITodoService
         };
 
         _todos.Add(todo);
+        return todo;
+    }
+
+    public TodoItem? Update(Guid id, UpdateTodoRequest request)
+    {
+        var todo = _todos.FirstOrDefault(item => item.id == id);
+
+        if (todo is null)
+        {
+            return null;
+        }
+
+        todo.title = request.Title.Trim();
+        todo.description = request.Description.Trim();
+
         return todo;
     }
 
@@ -37,15 +58,15 @@ public class TodoService : ITodoService
     public TodoItem? Toggle(Guid id)
     {
         var todo = _todos.FirstOrDefault(item => item.id == id);
-            
-            if (todo is null)
-            {
-                return null;
-            }
 
-            todo.IsDone = !todo.IsDone;
-            return todo;
-        
+        if (todo is null)
+        {
+            return null;
+        }
+
+        todo.IsDone = !todo.IsDone;
+        return todo;
+
     }
 
 }

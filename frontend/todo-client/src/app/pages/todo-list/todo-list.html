@@ -3,12 +3,38 @@
     <div>
       <p class="eyebrow">Task Overview</p>
       <h1>TODO List</h1>
-      <p class="subtitle">
-        View, complete, edit, and delete your tasks.
-      </p>
     </div>
 
   </div>
+
+  <div class="filter-tabs">
+  <button
+    type="button"
+    class="filter-btn"
+    [class.active]="activeFilter() === 'all'"
+    (click)="setFilter('all')"
+  >
+    All
+  </button>
+
+  <button
+    type="button"
+    class="filter-btn"
+    [class.active]="activeFilter() === 'completed'"
+    (click)="setFilter('completed')"
+  >
+    Completed
+  </button>
+
+  <button
+    type="button"
+    class="filter-btn"
+    [class.active]="activeFilter() === 'pending'"
+    (click)="setFilter('pending')"
+  >
+    Pending
+  </button>
+</div>
 
   @if (errorMessage()) {
   <div class="alert alert-error">
@@ -21,15 +47,13 @@
     Loading tasks...
   </div>
   } @else {
-  @if (todos().length === 0) {
-  <div class="card state-card empty-state">
+  @if (filteredTodos().length === 0) {
+  <div class=" state-card empty-state">
     <h2>No tasks found</h2>
-    <p>Create your first task to get started.</p>
-    <a routerLink="/create" class="primary-link">Create Task</a>
   </div>
   } @else {
   <div class="todo-grid">
-    @for (todo of todos(); track todo.id) {
+    @for (todo of filteredTodos(); track todo.id) {
     <article class="card todo-card" [class.completed]="todo.isDone">
       <div class="todo-card-header">
         <label class="status-control">
