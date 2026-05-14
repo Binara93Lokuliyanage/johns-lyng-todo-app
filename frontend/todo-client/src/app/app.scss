@@ -1,0 +1,92 @@
+@use '../styles/variables' as *;
+@use '../styles/buttons' as *;
+
+.app-section {
+    width: 100%;
+    background-color: $bg-primary;
+    display: grid;
+    grid-template-columns: 170px auto;
+    height: 100vh;
+
+    @media screen and (max-width: 600px) {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.navbar {
+    background-color: $bg-dark;
+    color: $text-secondary;
+    padding: 3rem 0.8rem 2rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    @media screen and (max-width: 600px) {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 2rem 1rem;
+    }
+}
+
+.brand {
+    color: $primary;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border: 1px solid $primary;
+    border-radius: $radius-lg;
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+
+    @media screen and (max-width: 600px) {
+        flex-direction: row;
+        gap: 1rem;
+        width: auto;
+        margin-bottom: 0;
+        padding: 0.5rem 1rem;
+    }
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    @media screen and (max-width: 600px) {
+        flex-direction: row;
+    }
+}
+
+.nav-item {
+    border-radius: 25px;
+    width: auto;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+
+    &:hover {
+        color: $text-white;
+        transition: $transition;
+    }
+
+    &.active {
+        color: $text-white;
+        background-color: $bg-secondary;
+        transition: $transition;
+    }
+}
+
+.nav-text {
+    line-height: 110%;
+
+    @media screen and (max-width: 600px) {
+        display: none;
+    }
+}

@@ -1,0 +1,105 @@
+<section class="page-section form-section" data-testid="todo-form-page">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">
+        {{ isEditMode() ? 'Update Task' : 'Create Task' }}
+      </p>
+
+      <h1>
+        {{ isEditMode() ? 'Edit TODO Item' : 'Add New TODO Item' }}
+      </h1>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="state-card" data-testid="todo-form-loading">
+      Loading task details...
+    </div>
+  } @else {
+    <form
+      class="form card todo-form"
+      [formGroup]="todoForm"
+      (ngSubmit)="submitForm()"
+      data-testid="todo-form"
+    >
+      <div class="form-group">
+        <label for="title">Task Title</label>
+
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          placeholder="Example: Complete technical assessment"
+          data-testid="todo-title-input"
+        />
+
+        @if (titleControl.touched && titleControl.hasError('required')) {
+          <small class="field-error" data-testid="todo-title-required-error">
+            Task title is required.
+          </small>
+        }
+
+        @if (titleControl.touched && titleControl.hasError('maxlength')) {
+          <small class="field-error" data-testid="todo-title-maxlength-error">
+            Task title cannot exceed 100 characters.
+          </small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+
+        <textarea
+          id="description"
+          rows="5"
+          formControlName="description"
+          placeholder="Add more details about this task..."
+          data-testid="todo-description-input"
+        ></textarea>
+
+        @if (descriptionControl.touched && descriptionControl.hasError('required')) {
+          <small class="field-error" data-testid="todo-description-required-error">
+            Task description is required.
+          </small>
+        }
+
+        @if (descriptionControl.touched && descriptionControl.hasError('maxlength')) {
+          <small class="field-error" data-testid="todo-description-maxlength-error">
+            Description cannot exceed 500 characters.
+          </small>
+        }
+      </div>
+
+      @if (errorMessage()) {
+        <div class="alert alert-error" data-testid="todo-form-error">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isSubmitting()"
+          data-testid="todo-submit-button"
+        >
+          {{
+            isSubmitting()
+              ? 'Saving...'
+              : isEditMode()
+                ? 'Update Task'
+                : 'Create Task'
+          }}
+        </button>
+
+        <a
+          routerLink="/"
+          class="text-button"
+          data-testid="todo-cancel-button"
+        >
+          Cancel
+        </a>
+      </div>
+    </form>
+  }
+</section>

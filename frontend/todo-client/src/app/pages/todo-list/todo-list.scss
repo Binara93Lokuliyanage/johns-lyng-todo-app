@@ -1,0 +1,44 @@
+@use '../../../styles/variables' as *;
+
+
+.todo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+
+    @media screen and (max-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 872px) {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+.todo-card {
+    background-color: $bg-white;
+}
+
+.todo-card-header {
+    padding-bottom: 0.5rem;
+    border-bottom: $border;
+    margin-bottom: 1rem;
+}
+
+.todo-content {
+    min-height: 150px;
+}
+
+.todo-description {
+    margin-top: 0.5rem;
+
+}
+
+.card-actions {
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: $border;
+    display: flex;
+    gap: 1rem;
+}

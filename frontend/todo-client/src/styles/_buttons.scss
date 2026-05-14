@@ -1,0 +1,47 @@
+@use 'variables' as *;
+
+button {
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.btn {
+    border-radius: $radius-md;
+    border: $border;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: $transition;
+    opacity: 0.9;
+
+    &:hover {
+        opacity: 1;
+        transform: scale(1.02);
+        transition: $transition;
+    }
+}
+
+.btn-danger {
+    background-color: $alert;
+    color: $text-white;
+}
+
+.btn-primary {
+    background-color: $bg-primary;
+    color: $text-primary;
+}
+
+.text-button {
+    font-size: 0.8em;
+    font-weight: 500;
+    color: $text-blue;
+}
+
+.filter-btn {
+    border-right: $border;
+    padding: 0.25rem 1rem;
+}
